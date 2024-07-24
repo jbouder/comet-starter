@@ -2,6 +2,7 @@ import {
   Alert,
   Button,
   ButtonGroup,
+  Checkbox,
   ErrorMessages,
   Form,
   FormGroup,
@@ -14,7 +15,7 @@ import {
   PASSWORD_RULES,
   REQUIRED_FORM_FIELDS_RULES,
 } from '@src/utils/constants';
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/use-auth';
@@ -26,12 +27,14 @@ export const SignIn = (): React.ReactElement => {
     control,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<FormInput>({
     defaultValues: {
       username: '',
       password: '',
     },
   });
+  const isChecked = watch('accept');
 
   const onSubmit: SubmitHandler<FormInput> = () => {
     signIn(false);
@@ -46,6 +49,10 @@ export const SignIn = (): React.ReactElement => {
   const handleSsoSignIn = (): void => {
     signIn(true);
   };
+
+  useEffect(() => {
+    console.log(isChecked);
+  }, [isChecked]);
 
   return (
     <div className="grid-container">
@@ -86,6 +93,25 @@ export const SignIn = (): React.ReactElement => {
               />
               {errors.password?.message && (
                 <ErrorMessages errors={[errors.password.message]} />
+              )}
+            </FormGroup>
+            <FormGroup>
+              <Controller
+                name="accept"
+                control={control}
+                rules={REQUIRED_FORM_FIELDS_RULES}
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                render={({ field: { ref: _, ...field } }) => (
+                  <Checkbox
+                    {...field}
+                    id="accept"
+                    label="I accept the terms and conditions"
+                    defaultChecked
+                  />
+                )}
+              />
+              {errors.accept?.message && (
+                <ErrorMessages errors={[errors.accept.message]} />
               )}
             </FormGroup>
             <ButtonGroup>
