@@ -28,10 +28,12 @@ export const SignIn = (): React.ReactElement => {
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm<FormInput>({
     defaultValues: {
       username: '',
       password: '',
+      accept: 'true',
     },
   });
   const isChecked = watch('accept');
@@ -44,6 +46,10 @@ export const SignIn = (): React.ReactElement => {
   const handleCancel = (event: FormEvent): void => {
     event.preventDefault();
     navigate('/');
+  };
+
+  const handleClear = (): void => {
+    reset({ accept: 'true' });
   };
 
   const handleSsoSignIn = (): void => {
@@ -101,12 +107,15 @@ export const SignIn = (): React.ReactElement => {
                 control={control}
                 rules={REQUIRED_FORM_FIELDS_RULES}
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                render={({ field: { ref: _, ...field } }) => (
+                render={({ field: { ref: _, value, onChange, ...field } }) => (
                   <Checkbox
                     {...field}
                     id="accept"
                     label="I accept the terms and conditions"
-                    defaultChecked
+                    checked={value === 'true'}
+                    onChange={(e) =>
+                      onChange(e.target.checked ? 'true' : 'false')
+                    }
                   />
                 )}
               />
@@ -131,6 +140,14 @@ export const SignIn = (): React.ReactElement => {
                 onClick={handleCancel}
               >
                 Cancel
+              </Button>
+              <Button
+                id="clear"
+                type="button"
+                variant="outline"
+                onClick={handleClear}
+              >
+                Clear
               </Button>
               {hasSsoConfig() && (
                 <Button
