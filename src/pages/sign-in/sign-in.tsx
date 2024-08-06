@@ -6,6 +6,8 @@ import {
   Form,
   FormGroup,
   Label,
+  RadioButtonData,
+  RadioButtonGroup,
   TextInput,
 } from '@metrostar/comet-uswds';
 import { FormInput } from '@src/types/form';
@@ -14,7 +16,7 @@ import {
   PASSWORD_RULES,
   REQUIRED_FORM_FIELDS_RULES,
 } from '@src/utils/constants';
-import React, { FormEvent } from 'react';
+import React, { ChangeEventHandler, FormEvent } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/use-auth';
@@ -45,6 +47,17 @@ export const SignIn = (): React.ReactElement => {
 
   const handleSsoSignIn = (): void => {
     signIn(true);
+  };
+
+  const textSourceRadioButtonOptions = [
+    { label: 'Manually Enter Text', value: 'manual', checked: false },
+    { label: 'Retrieve Text from URI', value: 'uri', checked: false },
+    { label: 'Upload File for Text', value: 'file', checked: false },
+  ];
+
+  const handleTextSourceChange: ChangeEventHandler = (event) => {
+    const target = event.target as HTMLInputElement;
+    console.log('event.target.value: ', target.value);
   };
 
   return (
@@ -87,6 +100,21 @@ export const SignIn = (): React.ReactElement => {
               {errors.password?.message && (
                 <ErrorMessages errors={[errors.password.message]} />
               )}
+            </FormGroup>
+            <FormGroup>
+              <Label htmlFor="textSource">Text Source</Label>
+              <RadioButtonGroup
+                id="textSource"
+                name="textSource"
+                onChange={handleTextSourceChange}
+                data={textSourceRadioButtonOptions.map((word, wordIndex) => {
+                  return {
+                    label: word.label,
+                    value: word.value,
+                    defaultChecked: wordIndex === 0,
+                  } as RadioButtonData;
+                })}
+              />
             </FormGroup>
             <ButtonGroup>
               <Button
