@@ -1,7 +1,7 @@
 import { Spinner } from '@metrostar/comet-extras';
 import { Card, CardBody } from '@metrostar/comet-uswds';
-import { mockData } from '@src/data/spacecraft';
 import { Spacecraft } from '@src/types/spacecraft';
+import axios from '@src/utils/axios';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import ErrorNotification from '../../components/error-notification/error-notification';
@@ -9,7 +9,6 @@ import useAuth from '../../hooks/use-auth';
 import { DashboardBarChart } from './dashboard-bar-chart/dashboard-bar-chart';
 import { DashboardPieChart } from './dashboard-pie-chart/dashboard-pie-chart';
 import { DashboardTable } from './dashboard-table/dashboard-table';
-// import axios from '@src/utils/axios';
 
 export const Dashboard = (): React.ReactElement => {
   const { isSignedIn } = useAuth();
@@ -20,17 +19,14 @@ export const Dashboard = (): React.ReactElement => {
   } = useQuery<Spacecraft[], { message: string }>({
     queryKey: ['dashboard'],
     queryFn: () =>
-      // axios
-      //   .get('/spacecraft')
-      //   .then((response) => {
-      //     return response.data;
-      //   })
-      //   .then((data) => {
-      //     return data.items;
-      //   }),
-
-      // TODO: Remove this mock response and uncomment above if API available
-      Promise.resolve(mockData.items),
+      axios
+        .get('/spacecraft')
+        .then((response) => {
+          return response.data;
+        })
+        .then((data) => {
+          return data.items;
+        }),
     enabled: isSignedIn,
   });
 
