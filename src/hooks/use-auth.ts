@@ -61,7 +61,6 @@ const useAuth = () => {
     if (isSso) {
       auth.signinRedirect({ redirect_uri: getSignInRedirectUrl() });
     } else {
-      auth.error = undefined;
       setIsSignedIn(true);
       setCurrentUserData(userData);
     }
