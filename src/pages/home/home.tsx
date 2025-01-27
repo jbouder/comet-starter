@@ -5,14 +5,19 @@ import useAuth from '../../hooks/use-auth';
 
 export const Home = (): React.ReactElement => {
   const { isSignedIn, currentUserData } = useAuth();
+  const getWelcomeMessage = (): string => {
+    if (currentUserData) {
+      return `Welcome ${getDisplayName(currentUserData)}`;
+    }
+    return 'Welcome Guest';
+  };
+
   return (
     <div className="grid-container">
       <div className="grid-row">
         <div className="grid-col">
-          <h1>
-            Welcome{' '}
-            {currentUserData ? getDisplayName(currentUserData) : 'Guest'}
-          </h1>
+          <title>{getWelcomeMessage()}</title>
+          <h1>{getWelcomeMessage()}</h1>
         </div>
       </div>
       {!isSignedIn && (
