@@ -2,6 +2,19 @@ import { Alert } from '@metrostar/comet-uswds';
 import { getDisplayName } from '@src/utils/auth';
 import React from 'react';
 import useAuth from '../../hooks/use-auth';
+import '../../web-components/hello-world';
+
+declare module 'react' {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface IntrinsicElements {
+      'hello-world': React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      >;
+    }
+  }
+}
 
 export const Home = (): React.ReactElement => {
   const { isSignedIn, currentUserData } = useAuth();
@@ -18,6 +31,7 @@ export const Home = (): React.ReactElement => {
         <div className="grid-col">
           <title>{getWelcomeMessage()}</title>
           <h1>{getWelcomeMessage()}</h1>
+          <hello-world></hello-world>
         </div>
       </div>
       {!isSignedIn && (
