@@ -8,10 +8,21 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const ReactCompilerConfig = {
+  /* ... */
+};
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tsconfigPaths(), EnvironmentPlugin('all')],
+  plugins: [
+    react({
+      babel: {
+        plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
+      },
+    }),
+    tsconfigPaths(),
+    EnvironmentPlugin('all'),
+  ],
   resolve: {
     alias: {
       '~uswds': path.resolve(__dirname, 'node_modules/@uswds/uswds'),

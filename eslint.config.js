@@ -1,6 +1,7 @@
 import pluginJs from '@eslint/js';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import reactPlugin from 'eslint-plugin-react';
+import reactCompiler from 'eslint-plugin-react-compiler';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 import tseslint from 'typescript-eslint';
 
@@ -27,6 +28,7 @@ export default [
     },
     plugins: {
       'react-hooks': hooksPlugin,
+      'react-compiler': reactCompiler,
     },
     rules: {
       // Base Warnings
@@ -49,6 +51,7 @@ export default [
       ...hooksPlugin.configs.recommended.rules,
       'react-hooks/exhaustive-deps': 'off',
       'react/react-in-jsx-scope': 'off',
+      'react-compiler/react-compiler': 'error',
     },
   },
 ];
